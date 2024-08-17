@@ -57,7 +57,7 @@ function filterCharities(province, city, nation, language, has_service) {
             listSection.className = 'listSection';
 
             listSection.innerHTML = `
-                <div class="charityName">${charity.organization_name}</div>
+                <a class="charityName" href="https://${charity.website_name}">${charity.organization_name}</a>
                 <div class="location">
                     ${charity.address}, ${charity.city_name}, ${charity.province_name}
                 </div>
@@ -70,7 +70,11 @@ function filterCharities(province, city, nation, language, has_service) {
                 <div>Languages: ${charity.languages || ''}</div>
                 <div>Nations: ${charity.nations || ''}</div>
                 <br>
-                <div>${charity.phone || ''} | ${charity.website_name || ''} | ${charity.email || ''}</div>
+                <div>
+                    ${charity.phone || ''} | 
+                    <a href="https://${charity.website_name || ''}">${charity.website_name || ''} </a> | 
+                    ${charity.email || ''}
+                </div>
             `;
 
             scrollableList.appendChild(listSection);
