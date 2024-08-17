@@ -5,5 +5,6 @@ blueprint = Blueprint("views", __name__)
 
 @blueprint.route("/")
 def home():
-    organizations = db.query_db("SELECT * FROM organizations")
-    return render_template("index.html", organizations=organizations)
+    results = db.filter()
+    print(db.rowToDictionary(results[0]))
+    return render_template("index.html", organizations=results)

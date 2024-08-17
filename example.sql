@@ -14,13 +14,13 @@ VALUES
 
 INSERT INTO locations (organization_id, city_id, address, has_service) 
 VALUES
-    (0, 0, "1234 Street", 1),
-    (0, 1, "34892 Street", 0),
-    (1, 0, "40957 Street", 1);
+    (1, 1, "1234 Street", 1),
+    (1, 2, "34892 Street", 0),
+    (2, 1, "40957 Street", 1);
 
 INSERT INTO location_languages (location_id, language_id, nation_id)
 VALUES
-    (0, 1, 1),
-    (0, 1, 2),
-    (1, 2, 7),
-    (2, 2, 7);
+    (1, 2, 2),
+    (1, 3, 2),
+    (2, 8, 3),
+    (3, 8, 3);
