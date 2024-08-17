@@ -27,8 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         filterCharities(province, city, nation, language, has_service);
     });
-
-    filterCharities();
+    
 });
 
 
