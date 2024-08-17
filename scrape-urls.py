@@ -7,8 +7,11 @@ import pandas as pd
 headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
 
 org_names = pd.read_csv('raw-data/canadian-registered-charities.csv', usecols=[1])['Organization name'].to_list()
-#org_names = ["Willingdon church", "Coquitlam Alliance Church", "Riverside Church"]
+#org_names = ["Willingdon church", "Riverside Church", "Coquitlam Alliance Church", "Oprah", "église"]
 Data = [ ] # Data ends up being a list of dictionaries
+
+# initialize keywords list
+keywords = ["christ", "church", "jesus", "eglise", "église"]
 
 for name in org_names:
     search_string = name.replace(' ', '+')
@@ -35,12 +38,16 @@ for name in org_names:
                 try: l["title"]=allData[i].find('h3',{"class":"DKV0Md"}).text
                 except: l["title"]=None
 
-                try: l["description"]=allData[i].find("div",{"class":"VwiC3b"}).text
-                except: l["description"]=None
+                try: n=allData[i].find("div",{"class":"VwiC3b"}).text
+                except: n=None
 
-                l["position"]=g
+                print(name)
+                print(n)
 
-                Data.append(l)
+                for word in keywords:
+                    if n.lower().find(word) >= 0 or name.lower().find(word) >= 0:
+
+                        Data.append(l)
 
                 l={}
 
