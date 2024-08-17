@@ -27,11 +27,11 @@
             <input type="text" id="searchBar" placeholder="Search Keywords">
         </form>
         <div id="scrollableList" class="scrollableList">
-            {% for organization in organizations %}
+            {% for charity in charities %}
                 <div class="listSection">
-                    <div>{{ organization[1] }}</div>
-                    <div>{{ organization[5] }}</div>
-                    <div>{{ organization[3] }} | {{ organization[2] }} | {{ organization[4] }}</div>
+                    <div>{{ charity['organization_name'] }}</div>
+                    <div>{{ charity['address'] }}</div>
+                    <div>{{ charity['email'] }} | {{ charity['phone'] }} | {{ charity['description'] }}</div>
                 </div>
             {% endfor %}
         </div>
