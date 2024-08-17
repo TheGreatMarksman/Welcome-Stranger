@@ -6,8 +6,8 @@ API_KEY = " "
 # get your Search Engine ID on your CSE control panel
 SEARCH_ENGINE_ID = " "
 
-#org_names = pd.read_csv('raw-data/canadian-registered-charities.csv', usecols=[1])['Organization name'].to_list()
-org_names = ["Willingdon church", "Riverside Church", "Coquitlam Alliance Church", "Oprah", "église" , "Christ Jesus"]
+org_names = pd.read_csv('raw-data/van-registered.csv', usecols=[1])['Organization name'].to_list()
+#org_names = ["Willingdon church", "Riverside Church", "Coquitlam Alliance Church", "Oprah", "église" , "Christ Jesus"]
 Data = [ ] # Data ends up being a list of dictionaries
 
 # initialize keywords list
@@ -44,7 +44,9 @@ for query in org_names:
                     l["name"] = query
                     l["link"]=search_item.get("link")
                     l["title"]=title
+                    l["snippet"]=snippet
                     Data.append(l)
+                    print(query)
                     break
 
         l={}
