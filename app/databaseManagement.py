@@ -93,7 +93,7 @@ def rowToDictionary(row):
         'phone': row[2],
         'email': row[3],
         'description': row[4],
-        'location_address': row[5], 
+        'address': row[5], 
         'has_service': row[6],
         'city_name': row[7], 
         'province_name': row[8],
