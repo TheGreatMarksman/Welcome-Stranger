@@ -15,16 +15,20 @@ driver.implicitly_wait(100)
 driver.get(list_url)
 
 try:
-    elem = driver.find_elements(By.XPATH, "/html/body/main/div/div[2]/div/article/a/h4")
+    elem = driver.find_elements(By.XPATH, "/html/body/main/div/div[2]/div/article/a")
     for url in elem:
         l = {}
-        l["name"] = url.text
-        also_elem = url.find_elements(By.XPATH, "./..")
-        for also_url in also_elem:
-            l["charity data link"] = also_url.get_attribute("href")
+        all_text = url.text
+        all_text = all_text.splitlines()
+        l["name"] = all_text[0]
+        l["charity data link"] = url.get_attribute("href")
+        try: l["description"] = all_text[1]
+        except: pass
         Data.append(l)
 except Exception as e:
     print(e)
+
+driver.close()
 
 df = pd.DataFrame(Data)
 df.to_csv('charity-data-links.csv', index=False, encoding='utf-8')
