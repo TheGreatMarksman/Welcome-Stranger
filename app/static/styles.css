@@ -7,3 +7,14 @@ body {
 h1 {
     font-size: 2em;
 }
+
+.banner {
+    background-color: orange;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+.banner div {
+    margin: 0 10px;
+}
