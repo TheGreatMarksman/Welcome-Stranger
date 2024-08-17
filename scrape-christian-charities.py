@@ -26,5 +26,7 @@ try:
 except Exception as e:
     print(e)
 
+driver.close()
+
 df = pd.DataFrame(Data)
 df.to_csv('charity-data-links.csv', index=False, encoding='utf-8')
