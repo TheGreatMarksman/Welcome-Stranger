@@ -23,11 +23,15 @@
 <div class="mainpage">
     <div class="selector">Selector</div>
     <div class="charitylist">
-        <input type="text" id="searchBar" placeholder="Search Keywords">
-        <div class="scrollableList">
+        <form id="searchForm">
+            <input type="text" id="searchBar" placeholder="Search Keywords">
+        </form>
+        <div id="scrollableList" class="scrollableList">
             {% for organization in organizations %}
-                <div class="organization">
-                    {{ organization[0] }}
+                <div class="listSection">
+                    <div>{{ organization[1] }}</div>
+                    <div>{{ organization[5] }}</div>
+                    <div>{{ organization[3] }} | {{ organization[2] }} | {{ organization[4] }}</div>
                 </div>
             {% endfor %}
         </div>
