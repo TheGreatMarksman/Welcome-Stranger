@@ -9,14 +9,14 @@ from bs4 import BeautifulSoup
 # code adapted from: https://www.scrapehero.com/scrape-data-from-data-layer-of-google-tag-manager/
 
 #url = "https://www.charitydata.ca/charity/acces-accessible-community-counselling-and-employment-services/136747276RR0001/"
-links_list = pd.read_csv('test.csv', usecols=[1])["charity data link"].to_list()
+links_list = pd.read_csv('test-data.csv', usecols=[1])["charity data link"].to_list()
 Data = []
 driver = webdriver.Chrome()
 
 for link in links_list:
     url = link
     driver.get(url)
-    time.sleep(3) # to ensure all data has been loaded
+    time.sleep(1) # to ensure all data has been loaded
     page = driver.page_source
     soup = BeautifulSoup(page, 'html.parser')
 
@@ -33,4 +33,4 @@ for link in links_list:
 
 driver.close()
 df = pd.DataFrame(Data)
-df.to_csv('google-results.csv', index=False, encoding='utf-8')
+df.to_csv('test-charity-data.csv', index=False, encoding='utf-8')
