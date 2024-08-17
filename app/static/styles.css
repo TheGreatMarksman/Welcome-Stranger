@@ -95,3 +95,16 @@ input[type="text"] {
     border: 1px solid #ccc;
     padding: 5px;
 }
+
+button {
+    width: 100px;
+    height: 30px;
+    border-radius: 20px;
+    border: none;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: grey;
+    color: white;
+}

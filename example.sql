@@ -5,7 +5,7 @@ VALUES
     ("Montreal", "QC"),
     ("Edmonton", "AB"),
     ("Calgary", "AB"),
-    ("Ottowa", "ON");
+    ("Ottawa", "ON");
 
 INSERT INTO organizations (name, website, phone, email, description)
 VALUES
