@@ -52,11 +52,26 @@ def filter(province=None, cities=None, languages=None, nations=None, has_church_
         params.extend(cities)
     
     if nations:
-        query += " AND n.name IN ({})".format(','.join('?' for _ in nations))
+        query += """
+        AND l.id IN (
+            SELECT ll.location_id
+            FROM location_languages ll
+            JOIN nations n ON ll.nation_id = n.id
+            WHERE n.name IN ({})
+        )
+        """.format(','.join('?' for _ in nations))
         params.extend(nations)
     
     if languages:
-        query += " AND lang.name IN ({})".format(','.join('?' for _ in languages))
+        query += """
+        AND l.id IN (
+            SELECT l2.id 
+            FROM locations l2
+            JOIN location_languages ll2 ON l2.id = ll2.location_id
+            JOIN languages lang2 ON ll2.language_id = lang2.id
+            WHERE lang2.name IN ({})
+        )
+        """.format(','.join('?' for _ in languages))
         params.extend(languages)
     
     if has_church_service is not None:
