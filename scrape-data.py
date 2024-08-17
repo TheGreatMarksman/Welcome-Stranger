@@ -2,16 +2,16 @@ import requests
 import pandas as pd
 
 # get the API KEY here: https://developers.google.com/custom-search/v1/overview
-API_KEY = " "
+API_KEY = "AIzaSyCaI7QIPC2ZG27lihoyGP_A4tVpUxW5_3A"
 # get your Search Engine ID on your CSE control panel
-SEARCH_ENGINE_ID = " "
+SEARCH_ENGINE_ID = "91d6a82417b9a4c87"
 
-org_names = pd.read_csv('raw-data/van-registered.csv', usecols=[1])['Organization name'].to_list()
+org_names = pd.read_csv('raw-data/van-registered-updated.csv', usecols=[1])['Organization name'].to_list()
 #org_names = ["Willingdon church", "Riverside Church", "Coquitlam Alliance Church", "Oprah", "église" , "Christ Jesus"]
 Data = [ ] # Data ends up being a list of dictionaries
 
 # initialize keywords list
-keywords = ["christ", "church", "jesus", "eglise", "église", "jésus"]
+keywords = ["christ", "church", "jesus", "eglise", "église", "jésus", "bible", "agape"]
 
 # the search query you want
 for query in org_names:
@@ -24,19 +24,22 @@ for query in org_names:
 
     # get the result items
     search_items = data.get("items")
+    if search_items == None:
+        break
     l={} # each dictionary has keys link, title, description, position
     # iterate over 10 results found
     for i, search_item in enumerate(search_items, start=1):
-        try:
-            long_description = search_item["pagemap"]["metatags"][0]["og:description"]
-        except KeyError:
-            long_description = "N/A"
+        #try:
+        #    long_description = search_item["pagemap"]["metatags"][0]["og:description"]
+        #except KeyError:
+        #    long_description = "N/A"
         # get the page title
         title = search_item.get("title")
         # page snippet
         snippet = search_item.get("snippet")
         # alternatively, you can get the HTML snippet (bolded keywords)
         # html_snippet = search_item.get("htmlSnippet")
+        print(i)
 
         for word in keywords:
             if not query == None and not title == None and not snippet == None: 
