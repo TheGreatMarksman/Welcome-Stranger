@@ -43,6 +43,7 @@ h1 {
     background-color: beige;
     padding: 10px;
 }
+
 #searchBar {
     width: 95%;
     padding: 10px;
@@ -59,6 +60,15 @@ h1 {
 .listSection {
     padding: 10px;
     border-bottom: 1px solid #ddd;
+}
+
+.charityName{
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.location{
+    font-style: italic;
 }
 
 .map {

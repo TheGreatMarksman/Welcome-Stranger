@@ -56,9 +56,27 @@
         <div id="scrollableList" class="scrollableList">
             {% for charity in charities %}
                 <div class="listSection">
-                    <div>{{ charity['organization_name'] }}</div>
-                    <div>{{ charity['address'] }}</div>
-                    <div>{{ charity['email'] }} | {{ charity['phone'] }} | {{ charity['description'] }}</div>
+                    <div class="charityName">{{ charity['organization_name'] }}</div>
+                    <div class="location">
+                        {{ charity['address'] }},
+                        {{ charity['city_name'] }},
+                        {{ charity['province_name'] }}
+                    </div>
+                    <br>
+                    <div>
+                        Has church service:
+                        {% if charity['province_name'] %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                    </div>
+                    <div>{{ charity['description'] }}</div>
+                    <br>
+                    <div>Languages: {{ charity['languages'] }}</div>
+                    <div>Nations: {{ charity['nations'] }}</div>
+                    <br>
+                    <div>{{ charity['phone'] }} | {{ charity['website_name'] }} | {{ charity['email'] }}</div>
                 </div>
             {% endfor %}
         </div>
