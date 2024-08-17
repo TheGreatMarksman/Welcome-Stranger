@@ -6,8 +6,8 @@ import pandas as pd
 
 headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
 
-org_names = pd.read_csv('raw-data/canadian-registered-charities.csv', usecols=[1])['Organization name'].to_list()
-#org_names = ["Willingdon church", "Riverside Church", "Coquitlam Alliance Church", "Oprah", "église"]
+#org_names = pd.read_csv('raw-data/canadian-registered-charities.csv', usecols=[1])['Organization name'].to_list()
+org_names = ["Willingdon church", "Riverside Church", "Coquitlam Alliance Church", "Oprah", "église" , "Christ Jesus"]
 Data = [ ] # Data ends up being a list of dictionaries
 
 # initialize keywords list
@@ -32,22 +32,24 @@ for name in org_names:
 
         if(link is not None):
             if(link.find('https') != -1 and link.find('http') == 0 and link.find('aclk') == -1):
-                l["name"] = name
                 g=g+1
-                l["link"]=link
-                try: l["title"]=allData[i].find('h3',{"class":"DKV0Md"}).text
-                except: l["title"]=None
+                try: title=allData[i].find('h3',{"class":"DKV0Md"}).text
+                except: title=None
 
-                try: n=allData[i].find("div",{"class":"VwiC3b"}).text
-                except: n=None
+                try: description=allData[i].find("div",{"class":"VwiC3b"}).text
+                except: description=None
 
                 print(name)
-                print(n)
+                print(description)
 
                 for word in keywords:
-                    if n.lower().find(word) >= 0 or name.lower().find(word) >= 0:
-
-                        Data.append(l)
+                    if not description == None and not title == None: 
+                        if name.lower().find(word) >= 0 or name.lower().find(word) >= 0:
+                            l["name"] = name
+                            l["link"]=link
+                            l["title"]=title
+                            Data.append(l)
+                            break
 
                 l={}
 
