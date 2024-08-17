@@ -51,7 +51,7 @@ h1 {
 }
 
 .scrollableList {
-    max-height: 400px; /* Adjust the height as needed */
+    max-height: 80vh;
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;

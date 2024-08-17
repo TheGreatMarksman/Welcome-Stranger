@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         filterCharities(province, city, nation, language, has_service);
     });
+
+    filterCharities();
 });
 
 
@@ -55,11 +57,22 @@ function filterCharities(province, city, nation, language, has_service) {
             listSection.className = 'listSection';
 
             listSection.innerHTML = `
-                <div>${charity.organization_name}</div>
-                <div>${charity.address}</div>
-                <div>${charity.email || ''} | ${charity.phone || ''} | ${charity.description || ''}</div>
+                <div class="charityName">${charity.organization_name}</div>
+                <div class="location">
+                    ${charity.address}, ${charity.city_name}, ${charity.province_name}
+                </div>
+                <br>
+                <div>
+                    Has church service: ${charity.has_service ? 'Yes' : 'No'}
+                </div>
+                <div>${charity.description || ''}</div>
+                <br>
+                <div>Languages: ${charity.languages || ''}</div>
+                <div>Nations: ${charity.nations || ''}</div>
+                <br>
+                <div>${charity.phone || ''} | ${charity.website_name || ''} | ${charity.email || ''}</div>
             `;
-            
+
             scrollableList.appendChild(listSection);
         });
     });
