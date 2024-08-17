@@ -12,13 +12,13 @@ Data = [ ] # Data ends up being a list of dictionaries
 
 # initialize keywords list
 keywords = ["christ", "church", "jesus", "eglise", "église", "jésus", "bible", "agape"]
-filter = ["jehova", "jehova's witness", "mormon", "latter day", "latter day saints", "joseph smith", "lds"]
+filter = ["jehova", "jehova's witness", "mormon", "latter day", "latter day saints", "joseph smith", "lds", "god the mother"]
 
 # the search query you want
 for query in org_names:
     # constructing the URL
     # doc: https://developers.google.com/custom-search/v1/using_rest
-    url = f"https://www.googleapis.com/customsearch/v1?key={API_KEY}&cx={SEARCH_ENGINE_ID}&q={query}&num=1&start=1"
+    url = f"https://www.googleapis.com/customsearch/v1?key={API_KEY}&cx={SEARCH_ENGINE_ID}&q={query}&num=1&start=1&cr=countryCA"
 
     # make the API request
     data = requests.get(url).json()
@@ -40,6 +40,7 @@ for query in org_names:
         snippet = search_item.get("snippet")
         # alternatively, you can get the HTML snippet (bolded keywords)
         # html_snippet = search_item.get("htmlSnippet")
+        print(i)
 
         for word in keywords:
             if not query == None and not title == None and not snippet == None: 
