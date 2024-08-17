@@ -21,7 +21,34 @@
 
 {% block mainpage %}
 <div class="mainpage">
-    <div class="selector">Selector</div>
+    <div class="selector">
+        <p>Location</p>
+        <label for="provinceList"></label>
+        <select id="provinceList">
+            <option value="">Province</option>
+            <option value="BC">British Columbia</option>
+            <option value="ON">Ontario</option>
+            <option value="AB">Alberta</option>
+            <option value="MB">Manitoba</option>
+        </select><br><br>
+
+        <input type="text" id="city" placeholder="City"><hr>
+
+        <label for="NationList"></label>
+        <select id="NationList">
+            <option value="">Nation</option>
+            <option value="Indian">Indian</option>
+            <option value="Turkish">Turkish</option>
+            <option value="Iranian">Iranian</option>
+            <option value="Afghan">Afghan</option>
+        </select><br><br>
+
+        <input type="text" id="language" placeholder="Language" style="display: none;"><hr>
+
+        Church Service <input type="checkbox" id="service"><label for="service"></label><br><br>
+
+        <button id="searchBtn">Search</button>
+    </div>
     <div class="charitylist">
         <form id="searchForm">
             <input type="text" id="searchBar" placeholder="Search Keywords">

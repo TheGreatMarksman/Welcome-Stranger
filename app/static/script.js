@@ -16,4 +16,51 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
+
+    // Refresh the list of charities when the user clicks search
+    document.getElementById('searchBtn').addEventListener('click', function() {
+        const province = document.getElementById('provinceList').value;
+        const city = document.getElementById('city').value;
+        const nation = document.getElementById('NationList').value;
+        const language = document.getElementById('language').value;
+        const has_service = document.getElementById('service').checked ? 1 : 0;
+
+        filterCharities(province, city, nation, language, has_service);
+    });
 });
+
+
+function filterCharities(province, city, nation, language, has_service) {
+    fetch('/filter', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            province: province,
+            city: city,
+            nation: nation,
+            language: language,
+            has_service: has_service
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Update the displayed results
+        const scrollableList = document.getElementById('scrollableList');
+        scrollableList.innerHTML = ''; // Clear the existing results
+
+        data.forEach(charity => {
+            const listSection = document.createElement('div');
+            listSection.className = 'listSection';
+
+            listSection.innerHTML = `
+                <div>${charity.organization_name}</div>
+                <div>${charity.address}</div>
+                <div>${charity.email || ''} | ${charity.phone || ''} | ${charity.description || ''}</div>
+            `;
+            
+            scrollableList.appendChild(listSection);
+        });
+    });
+}

@@ -65,3 +65,23 @@ h1 {
     background-color: lightgreen;
     padding: 10px;
 }
+
+/* Rounded corners for the dropdown list */
+select {
+    width: 150px;
+    height: 35px;
+    border-radius: 10px;
+    /* Adjust the radius to your preference */
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+/* Rounded corners for the input field */
+input[type="text"] {
+    width: 150px;
+    height: 35px;
+    border-radius: 10px;
+    /* Adjust the radius to your preference */
+    border: 1px solid #ccc;
+    padding: 5px;
+}
