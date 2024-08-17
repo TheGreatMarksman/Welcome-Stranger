@@ -8,13 +8,60 @@ h1 {
     font-size: 2em;
 }
 
-.banner {
+.navbar {
     background-color: orange;
     color: white;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 10px;
 }
-.banner div {
-    margin: 0 10px;
+.title{
+    flex: 1;
+    text-align: left;
+}
+.item {
+    display: flex;
+    justify-content: flex-start;
+    flex: 1;
+    /*padding-left: 50%;*/
+}
+
+.mainpage {
+    display: grid;
+    grid-template-columns: 1fr 2fr 3fr;
+    height: 100vh;
+    gap: 10px; /* Optional: Adds space between columns */
+}
+
+.selector {
+    background-color: lightblue;
+    padding: 10px;
+}
+
+.charitylist {
+    background-color: beige;
+    padding: 10px;
+}
+#searchBar {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.scrollableList {
+    max-height: 400px; /* Adjust the height as needed */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+.organization {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.map {
+    background-color: lightgreen;
+    padding: 10px;
 }
