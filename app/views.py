@@ -5,7 +5,7 @@ blueprint = Blueprint("views", __name__)
 
 @blueprint.route("/")
 def home():
-    return render_template("index.html", charities=filter_locations())
+    return render_template("index.html")
 
 @blueprint.route('/filter', methods=['POST'])
 def filter():
