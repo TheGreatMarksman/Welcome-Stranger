@@ -1,6 +1,8 @@
 import requests
 import pandas as pd
 
+# adapted from https://thepythoncode.com/article/use-google-custom-search-engine-api-in-python
+
 # get the API KEY here: https://developers.google.com/custom-search/v1/overview
 API_KEY = ""
 # get your Search Engine ID on your CSE control panel
