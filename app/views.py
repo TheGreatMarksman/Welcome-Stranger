@@ -5,6 +5,5 @@ blueprint = Blueprint("views", __name__)
 
 @blueprint.route("/")
 def home():
-    results = db.filter(nations=["Afghan"])
-    print(db.rowToDictionary(results[0]))
+    results = db.filter()
     return render_template("index.html", organizations=results)

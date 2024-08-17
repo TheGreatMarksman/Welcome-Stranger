@@ -7,3 +7,37 @@
 
 <p> {{ organizations }} </p>
 {% endblock %}
+
+{% block navbar %}
+<div class="navbar">
+    <div class="title">P4N</div>
+    <div class="item">People Groups by City</div>
+    <div class="item">About Us</div>
+    <div class="item">Our Partners</div>
+    <div class="item">Contact Us</div>
+    <div class="item">Give</div>
+</div>
+{% endblock %}
+
+{% block mainpage %}
+<div class="mainpage">
+    <div class="selector">Selector</div>
+    <div class="charitylist">
+        <form id="searchForm">
+            <input type="text" id="searchBar" placeholder="Search Keywords">
+        </form>
+        <div id="scrollableList" class="scrollableList">
+            {% for organization in organizations %}
+                <div class="listSection">
+                    <div>{{ organization[1] }}</div>
+                    <div>{{ organization[5] }}</div>
+                    <div>{{ organization[3] }} | {{ organization[2] }} | {{ organization[4] }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="map">Map</div>
+</div>
+
+{% endblock%}
+
