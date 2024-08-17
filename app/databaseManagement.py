@@ -18,6 +18,12 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (result[0] if result else None) if one else result
 
+def filter(province, cities, languages, has_church_service):
+    query = """
+    SELECT * FROM locations
+    WHERE
+    """
+
 def close_db(exception):
     db = getattr(g, '_database', None)
     if db is not None:
