@@ -94,6 +94,8 @@ def getNames(list):
             val.append(n)
     return val
 
+page_filter = ["service", "ministry", "ministries", "welcome", "contact", "about us", "language", "group", "culture", "home", "our history", "translation"]
+
 # import flags
 temp = pd.read_csv('data-scrape/flags.csv', usecols=[1])["Nation"].to_list()
 nation = getNames(temp)
@@ -104,14 +106,24 @@ language = getNames(temp)
 
 flags = dict.fromkeys(set(nation + people + language), False)
 
+# find all pages on site
 link = "https://willingdon.org"
-pages = asyncio.run(collectPagesFromMaps(link))
-print(len(pages))
-'''for page in pages: 
+index_pages = asyncio.run(collectPagesFromMaps(link))
+# TODO: check for sitemap location failure
+
+# filter out relevant links
+pages = []
+for page in index_pages:
+    if any(ele in page for ele in page_filter):
+        pages.append(page)
+
+# scan relevant links for information
+print(pages)
+for page in pages: 
     site_content = urllib.request.urlopen(page).read().decode("utf-8")
 
     for word in flags:
         if word in site_content:
-            flags[word] = True'''
+            flags[word] = True
 
 print(flags)
