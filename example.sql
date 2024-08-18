@@ -9,7 +9,7 @@ VALUES
 
 INSERT INTO organizations (name, website, phone, email, description)
 VALUES
-    ("Church A", "a.ch.com", 1234, "a@ch.com", "A chuch with two locations"),
+    ("Willingdon Church", "a.ch.com", 1234, "a@ch.com", "A safe haven dedicated to providing spiritual guidance, emotional support, and practical resources for individuals navigating life's storms, empowering them to anchor their hope in Christ."),
     ("Church B", "b.ch.com", 1234, "b@ch.com", "B chuch with one locations"),
     ("Church C", "c.ch.com", 12345, "c@ch.com", "A church"),
     ("Church D", "d.ch.com", 12345, "d@ch.com", "A church"),
