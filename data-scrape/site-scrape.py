@@ -3,6 +3,8 @@ import urllib.request
 import asyncio, aiohttp, re, gzip
 import re
 import validators
+import json
+import csv
 
 # sitemap page locating adapted (as in directly taken) from https://stackoverflow.com/questions/56663789/how-to-get-all-pages-from-the-whole-website-using-python
 async def processMapsRecursively(queue, session, mainDomain, foundPageAddresses):
@@ -92,10 +94,31 @@ def getNames(list):
             val.append(n.casefold()) # for case-insensitive comparisons
     return val
 
+# SETUP
+
 # keywords to filter page links 
 page_filter = ["service", "ministry", "ministries", "welcome", "contact", "about us", "language", 
                "group", "culture", "home", "history", "translation", "connect", "giving", "global"
                "nation"]
+Data = {}
+links_list = {}
+
+key_column = "Business Registration Number:"
+value_column = "Website:"
+
+with open('data-scrape/data/sample-results.csv', mode='r', newline='', encoding='utf-8') as csvfile:
+    reader = csv.DictReader(csvfile)
+    
+    # Check if the columns exist
+    if key_column not in reader.fieldnames or value_column not in reader.fieldnames:
+        raise ValueError(f"Columns {key_column} or {value_column} not found in CSV file")
+    
+    # Iterate through each row in the CSV file
+    for row in reader:
+        key = row[key_column]
+        value = row[value_column]
+        links_list[key] = value
+print(links_list.items())
 
 # import flags
 temp = pd.read_csv('data-scrape/flags.csv', usecols=[1])["Nation"].to_list()
@@ -108,52 +131,72 @@ language = getNames(temp)
 flags = dict.fromkeys(set(nation + people + language), False)
 
 # find all pages on site
-link = "http://WWW.100MILEBAPTIST.COM"
-index_pages = asyncio.run(collectPagesFromMaps(link))
-print("INDEX PAGES")
-print(index_pages)
+for num, link in links_list.items():
+    if link != 'n/a': 
+        print(link)
+        # create a seperate instance of flags
+        myflags = dict.fromkeys(flags, False)
 
-if index_pages != None:
+        index_pages = None
+        try:
+            index_pages = asyncio.run(collectPagesFromMaps("https://" + link))
+            link = "https://" + link
+        except:
+            try:
+                index_pages = asyncio.run(collectPagesFromMaps("http://" + link))
+                link = "http://" + link
+            except:
+                try:
+                    index_pages = asyncio.run(collectPagesFromMaps(link))
+                except:
+                    pass
+        print("INDEX PAGES")
+        print(index_pages)
 
-    # filter out relevant links
-    pages = []
-    # link_length = re.compile('(.*://.*/.*)/')
-    for page in index_pages:
-        # validate link
-        if validators.url(page):
-            # format the link - make sure link ends with slash
-            if page[-1] != '/':
-                page += '/'
-            # only keep links of a certain length
-            #if link_length.match(page) is not None:
-            test = page.count('/')
-            if test <=4:
-                pages.append(page)
+        if index_pages != None:
 
-    # extra filtering if too many links
-    if len(pages) > 20:
-        temp = pages
-        pages = []
-        for page in temp:
-            if any(ele in page for ele in page_filter):
-                pages.append(page)
+            # filter out relevant links
+            pages = []
+            # link_length = re.compile('(.*://.*/.*)/')
+            for page in index_pages:
+                # validate link
+                if validators.url(page):
+                    # format the link - make sure link ends with slash
+                    if page[-1] != '/':
+                        page += '/'
+                    # only keep links of a certain length
+                    #if link_length.match(page) is not None:
+                    test = page.count('/')
+                    if test <=4:
+                        pages.append(page)
 
-    # quicksolve of incomplete sitemaps
-    if len(pages) == 0:
-        pages.append(link)
-                    
-    print(len(pages))
-    # scan relevant links for information
-    # TODO: make sure scraping is not case sensitive
-    print("PAGES")
-    print(pages)
-    for page in pages: 
-        print(page)
-        site_content = urllib.request.urlopen(page).read().decode("utf-8")
-        for word in flags:
-            if word in site_content.casefold():
-                flags[word] = True
+            # extra filtering if too many links
+            if len(pages) > 20:
+                temp = pages
+                pages = []
+                for page in temp:
+                    if any(ele in page for ele in page_filter):
+                        pages.append(page)
 
-# TODO: deal with sitemap location failure
+            # quicksolve of incomplete sitemaps
+            if len(pages) == 0:
+                pages.append(link)
+                            
+            print(len(pages))
+            # scan relevant links for information
+            print("PAGES")
+            print(pages)
 
-print(flags)
+            for page in pages: 
+                print(page)
+                site_content = urllib.request.urlopen(page).read().decode("utf-8")
+                for word in myflags:
+                    if word in site_content.casefold():
+                        myflags[word] = True
+
+        # TODO: deal with sitemap location failure
+
+        Data[num] = myflags
+
+with open('language-data.json', 'w') as fp:
+    json.dump(Data, fp)

@@ -2,10 +2,8 @@ import pandas as pd
 import requests
 import re
 
-# this code is no longer used, but is kept for reference
-
-orgs = pd.read_csv("first-pass.csv", usecols=[0,1], dtype={"name":"str", "link":"str"}) # schema: name, link
-#orgs = orgs.head()
+orgs = pd.read_csv("data-scrape/data/google-search-test.csv", usecols=[0,1], dtype={"name":"str", "link":"str"}) # name, link
+orgs = orgs.head()
 org_links = orgs["link"].to_list()
 
 headers={'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36'}
