@@ -71,9 +71,8 @@ h1 {
     font-style: italic;
 }
 
-.map {
+.mapSection{
     background-color: lightgreen;
-    padding: 10px;
 }
 
 /* Rounded corners for the dropdown list */
@@ -107,4 +106,15 @@ button {
 button:hover {
     background-color: grey;
     color: white;
+}
+
+#map{
+    height: 100%;
+    width: 100%;
+}
+.mapButton{
+    display: inline-block;
+    height: 50px;
+    white-space: nowrap;
+    color: yellow;
 }
