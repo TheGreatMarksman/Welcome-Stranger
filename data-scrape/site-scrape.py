@@ -4,6 +4,8 @@ import asyncio, aiohttp, re, gzip
 import re
 import validators
 
+Data = []
+
 # sitemap page locating adapted (as in directly taken) from https://stackoverflow.com/questions/56663789/how-to-get-all-pages-from-the-whole-website-using-python
 async def processMapsRecursively(queue, session, mainDomain, foundPageAddresses):
     #take map address from queue and check if it responds
@@ -108,8 +110,20 @@ language = getNames(temp)
 flags = dict.fromkeys(set(nation + people + language), False)
 
 # find all pages on site
-link = "http://WWW.100MILEBAPTIST.COM"
-index_pages = asyncio.run(collectPagesFromMaps(link))
+link = "WWW.100MILEBAPTIST.COM"
+index_pages = None
+try:
+    index_pages = asyncio.run(collectPagesFromMaps("https://" + link))
+    link = "https://" + link
+except:
+    try:
+        index_pages = asyncio.run(collectPagesFromMaps("http://" + link))
+        link = "http://" + link
+    except:
+        try:
+            index_pages = asyncio.run(collectPagesFromMaps(link))
+        except:
+            pass
 print("INDEX PAGES")
 print(index_pages)
 
