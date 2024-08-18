@@ -100,6 +100,35 @@ def rowToDictionary(row):
         'languages': row[9].split(',') if row[9] else [],
         'nations': row[10].split(',') if row[10] else [],
     }
+    
+def get_provinces():
+    provinceMap = {
+        'BC': 'British Columbia',
+        'ON': 'Ontario',
+        'AB': 'Alberta',
+        'MB': 'Manitoba',
+        'NL': 'Newfoundland and Labrador',
+        'PE': 'Prince Edward Island',
+        'NS': 'Nova Scotia',
+        'NB': 'New Brunswick',
+        'QC': 'Quebec',
+        'SK': 'Saskatchewan',
+        'YT': 'Yukon',
+        'NT': 'Northest Territories',
+        'NU': 'Nunavut',
+    }
+    return [(p[0], provinceMap[p[0]]) for p in query_db("""
+        SELECT DISTINCT cities.province
+        FROM cities
+        JOIN locations ON cities.id = locations.city_id;
+        """)]
+
+def get_cities():
+    return query_db("""
+        SELECT DISTINCT cities.name, cities.province
+        FROM cities
+        JOIN locations ON cities.id = locations.city_id;
+    """)
 
 def close_db(exception):
     db = getattr(g, '_database', None)

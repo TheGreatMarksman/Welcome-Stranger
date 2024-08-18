@@ -2,52 +2,90 @@
 
 {% block title %}Main{% endblock %}
 
-{% block content %}
-<h1>Welcome Stranger</h1>
-
-<p> {{ organizations }} </p>
-{% endblock %}
-
 {% block navbar %}
 <div class="navbar">
-    <div class="title">P4N</div>
-    <div class="item">People Groups by City</div>
-    <div class="item">About Us</div>
-    <div class="item">Our Partners</div>
-    <div class="item">Contact Us</div>
-    <div class="item">Give</div>
+    <div class="sp-logo">
+        <a href="https://www.p4n.ca/home"><img src="https://storage2.snappages.site/GGN7WX/assets/images/4412726_924x544_500.png" width="100px"></a>
+    </div>
+    <div id="sp-nav">
+        <nav id="sp-nav-links">
+            <ul>
+                <li style="z-index:1249;" id="nav_groups-by-city" data-type="folder">
+                    <a href="https://www.p4n.ca/groups-by-city"><span></span>People Groups By City&nbsp;
+                        <i class="fa fa-angle-down" style="font-size:12px;vertical-align:10%;"></i>
+                    </a>
+                </li>
+                <li style="z-index:1248;" id="nav_about-us" data-type="basic">
+                    <a href="https://www.p4n.ca/about-us" target="_self"><span></span>About Us</a>
+                </li>
+                <li style="z-index:1247;" id="nav_our-partners" data-type="basic">
+                    <a href="https://www.p4n.ca/our-partners" target="_self"><span></span>Our Partners</a>
+                </li>
+                <li style="z-index:1246;" id="nav_contact-us" data-type="basic">
+                    <a href="https://www.p4n.ca/contact-us" target="_self"><span></span>Contact Us</a>
+                </li><li style="z-index:1245;" id="nav_give" data-type="basic">
+                    <a href="https://www.p4n.ca/give" target="_self"><span></span>Give</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </div>
 {% endblock %}
 
 {% block mainpage %}
 <div class="mainpage">
     <div class="selector">
-        <p>Location</p>
-        <label for="provinceList"></label>
-        <select id="provinceList">
-            <option value="">Province</option>
-            <option value="BC">British Columbia</option>
-            <option value="ON">Ontario</option>
-            <option value="AB">Alberta</option>
-            <option value="MB">Manitoba</option>
-        </select><br><br>
+        <div class="left-container">
+            <p>Location</p>
+            <div class="form-group">
+                <label for="provinceList">Province</label>
+                <select id="provinceList">
+                    <option value="">Any</option>
+                    {% for value, label in provinces %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+    
+            <div class="form-group">
+                <label for="city">City</label>
+                <div class="searchable-dropdown">
+                    <input  id="city" type="text" class="dropdown-input" placeholder="City">
+                    <button id="clear-button" class="clear-button">×</button>
+                    <div id="dropdown-menu" class="dropdown-menu">
+                        {% for city, province in cities %}
+                            <div class="dropdown-item city-option" data-value="{{ city }}" province="{{ province }}">{{ city }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <hr>
+    
+            <div class="form-group">
+                <label for="NationList">Nation</label>
+                <select id="NationList">
+                    <option value="">Any</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Turkish">Turkish</option>
+                    <option value="Iranian">Iranian</option>
+                    <option value="Afghan">Afghan</option>
+                </select>
+            </div>
 
-        <input type="text" id="city" placeholder="City"><hr>
+            <hr>
+<!-- 
+            <hr>
+    
+            Organization Type: <br>
+            <input type="checkbox" id="service"><label for="service">Church</label><br>
+            <input type="checkbox" id="service"><label for="service">Serving Kids</label><br>
+            <input type="checkbox" id="service"><label for="service">Serving Seniors</label><br>
+            <input type="checkbox" id="service"><label for="service">Mission Trips</label><br>
+            <hr> -->
+            
+            <p style="text-align: right;"><u>Clear</u></p>
+        </div>
 
-        <label for="NationList"></label>
-        <select id="NationList">
-            <option value="">Nation</option>
-            <option value="Indian">Indian</option>
-            <option value="Turkish">Turkish</option>
-            <option value="Iranian">Iranian</option>
-            <option value="Afghan">Afghan</option>
-        </select><br><br>
-
-        <input type="text" id="language" placeholder="Language" style="display: none;"><hr>
-
-        Church Service <input type="checkbox" id="service"><label for="service"></label><br><br>
-
-        <button id="searchBtn">Search</button>
     </div>
     <div class="charitylist">
         <form id="searchForm">
