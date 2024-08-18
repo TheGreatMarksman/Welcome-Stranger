@@ -3,7 +3,7 @@
 # search for keywords for those with websites and tag -> if broken link, move to no website
 # somehow deal with those without websites -> google search???
 import pandas as pd
-import string
+import urllib.request
 
 # for importing flags
 def getNames(list):
@@ -23,17 +23,17 @@ temp = pd.read_csv('data-scrape/flags.csv', usecols=[3])["Languages"].to_list()
 language = getNames(temp)
 
 flags = list(set(nation + people + language))
-print(flags)
 
-
-import urllib.request
+link = "https://100milebaptist.com/"
 site_content = urllib.request.urlopen(link).read().decode("utf-8")
 
-keywords = ['word', 'word1', 'word2']
-for word in keywords:
+print(site_content)
+
+for word in flags:
     if word in site_content:
         print(f"{word} found")
     else:
         print(f"{word} not found")
 
-nolink = []
+if "Christ" in site_content:
+    print("Christ found")
