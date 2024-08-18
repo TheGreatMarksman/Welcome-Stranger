@@ -90,9 +90,10 @@ h1 {
 }
 
 .mainpage {
+    height: calc(100vh - 130px);
+    max-height: calc(100vh - 130px);
     display: grid;
     grid-template-columns: 1fr 3fr 2fr;
-    height: 100vh;
 }
 
 .selector {
@@ -107,8 +108,11 @@ h1 {
 }
 
 .charitylist {
+    height: 100%;
     background-color: rgb(255, 255, 255);
     padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
 #searchBar {
@@ -118,10 +122,11 @@ h1 {
 }
 
 .scrollableList {
-    max-height: 80vh;
+    max-height: 72vh;
     overflow-y: auto;
     padding: 10px;
     background-color: #ffffff;
+    flex-grow: 1;
 }
 
 .listSection {
@@ -130,6 +135,11 @@ h1 {
     margin-bottom: 15px;
     border-radius: 15px;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.233);
+    transition: 0.4s;
+}
+
+.listSection:hover {
+    background-color: rgb(203, 203, 203);
 }
 
 .charityName {
@@ -295,5 +305,22 @@ button:hover {
     display: inline-block;
     height: 50px;
     white-space: nowrap;
-    color: black;
+    color: yellow;
+}
+
+.text-button {
+    background: none;
+    border: none;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: inherit;
+    padding: 0;
+    margin: 0;
+    width: auto;
+}
+
+.text-button:hover {
+    color: darkblue;
+    background: none;
 }

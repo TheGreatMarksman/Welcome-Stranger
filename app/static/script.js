@@ -2,12 +2,11 @@ document.addEventListener('DOMContentLoaded', function () {
     
     filterCharities();
 
-    const searchForm = document.getElementById('searchForm');
     const searchBar = document.getElementById('searchBar');
     let scrollableList = document.getElementById('scrollableList');
     const listSections = scrollableList.getElementsByClassName('listSection');
 
-    searchForm.addEventListener('submit', function(event) {
+    searchBar.addEventListener('input', function(event) {
         event.preventDefault(); // Prevent the form from submitting
         const query = searchBar.value.toLowerCase();
         Array.from(listSections).forEach(section => {
@@ -109,6 +108,14 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('NationList').addEventListener('change', () => {
         filterFromUI();
     });
+
+    document.getElementById('clear-btn').addEventListener('click', () => {
+        document.getElementById('provinceList').value = "";
+        document.getElementById('city').value = "";
+        document.getElementById('NationList').value = "";
+        updateCityList();
+        filterFromUI();
+    })
 });
 
 function updateCityList(province) {
