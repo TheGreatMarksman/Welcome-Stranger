@@ -158,6 +158,9 @@ h1 {
     font-size: 0.8em;
     display: block;
     margin-bottom: 5px;
+  
+.mapSection{
+    background-color: rgb(226, 226, 226);
 }
 
 /* Rounded corners for the dropdown list */
@@ -195,7 +198,7 @@ button:hover {
     background-color: grey;
     color: white;
 }
-
+  
 .custom-select-wrapper {
     position: relative;
     display: inline-block;
@@ -279,4 +282,14 @@ button:hover {
 
 .hidden {
     display: none;
+  
+#map{
+    height: 100%;
+    width: 100%;
+}
+.mapButton{
+    display: inline-block;
+    height: 50px;
+    white-space: nowrap;
+    color: yellow;
 }
