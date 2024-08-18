@@ -94,7 +94,9 @@ def getNames(list):
             val.append(n)
     return val
 
-page_filter = ["service", "ministry", "ministries", "welcome", "contact", "about us", "language", "group", "culture", "home", "our history", "translation"]
+# keywords to filter page links 
+page_filter = ["service", "ministry", "ministries", "welcome", "contact", "about us", "language", 
+               "group", "culture", "home", "our history", "translation", "connect", "ilm"]
 
 # import flags
 temp = pd.read_csv('data-scrape/flags.csv', usecols=[1])["Nation"].to_list()
