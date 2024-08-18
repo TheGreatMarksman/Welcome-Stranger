@@ -181,7 +181,7 @@ function filterCharities(province, city, nation, language, has_service) {
 
         const mapIframe = document.getElementById('map');
         let mapButtons = scrollableList.getElementsByClassName('mapButton');
-
+        mapURL = ``;
         // Adds listener for every map button
         Array.from(mapButtons).forEach(btn => {
             btn.addEventListener('click', function(){
