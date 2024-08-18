@@ -1,7 +1,7 @@
 import pandas as pd
 import re
 
-NUM_ORGS = 50 # number of organizations to use
+NUM_ORGS = 1000 # number of organizations to use
 
 data = pd.DataFrame() # ideal schema: id, name, website, phone, email, description
 
@@ -39,6 +39,7 @@ id_website = id_website.head(NUM_ORGS)
 id_website.rename(columns={"Business Registration Number:":"id","Website:":"website"}, inplace=True)
 
 data = data.merge(id_website, how="outer", on=["id"])
+
 assert data.shape[0]==length
 
 del id_website
@@ -53,4 +54,4 @@ data = data.merge(id_description, how="outer", on=["id"])
 assert data.shape[0]==length
 
 # save as csv
-data.to_csv("sample-org-data.csv")
+data.to_csv("organization-data-"+str(NUM_ORGS)+".csv")
