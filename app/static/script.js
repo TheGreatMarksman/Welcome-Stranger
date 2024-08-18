@@ -1,14 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Refresh the list of charities when the user clicks search
-    document.getElementById('searchBtn').addEventListener('click', function() {
-        const province = document.getElementById('provinceList').value;
-        const city = document.getElementById('city').value;
-        const nation = document.getElementById('NationList').value;
-        const language = document.getElementById('language').value;
-        const has_service = document.getElementById('service').checked ? 1 : 0;
-
-        filterCharities(province, city, nation, language, has_service);
-    });
     
     filterCharities();
 

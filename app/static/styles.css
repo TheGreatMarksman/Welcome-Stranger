@@ -81,6 +81,7 @@ h1 {
     flex: 1;
     text-align: left;
 }
+
 .item {
     display: flex;
     justify-content: flex-start;
@@ -131,12 +132,12 @@ h1 {
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.233);
 }
 
-.charityName{
+.charityName {
     font-weight: bold;
     font-size: 1.2em;
 }
 
-.location{
+.location {
     font-style: italic;
 }
 
@@ -158,6 +159,7 @@ h1 {
     font-size: 0.8em;
     display: block;
     margin-bottom: 5px;
+}
   
 .mapSection{
     background-color: rgb(226, 226, 226);
@@ -282,12 +284,14 @@ button:hover {
 
 .hidden {
     display: none;
+}
   
 #map{
     height: 100%;
     width: 100%;
 }
-.mapButton{
+
+.mapButton {
     display: inline-block;
     height: 50px;
     white-space: nowrap;
