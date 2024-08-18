@@ -46,11 +46,12 @@ document.addEventListener('DOMContentLoaded', function () {
             filterOptions();
             menu.style.display = 'block';
         })
-
+        // clear-button is x button for city filter
         dropdown.parentElement.querySelector('.clear-button').addEventListener('click', function() {
             dropdown.value = ''; // Clear the input field
             document.getElementById('dropdown-menu').style.display = 'none'; // Hide dropdown after clearing input
             filterOptions();
+            filterFromUI();
         });
     }
     
@@ -96,6 +97,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function() {
+            let dropdown = item.closest('.dropdown-menu').parentElement.querySelector('.dropdown-input');
+            dropdown.value = item.textContent;
+            filterFromUI();
+        });
+    });
     
     document.getElementById('provinceList').addEventListener('change', () => {
         updateCityList(document.getElementById('provinceList').value);
@@ -109,6 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
         filterFromUI();
     });
 
+    // clear-btn is for clearing the filter options
     document.getElementById('clear-btn').addEventListener('click', () => {
         document.getElementById('provinceList').value = "";
         document.getElementById('city').value = "";
@@ -152,6 +162,7 @@ function filterFromUI() {
 let timeoutId = null;
 
 function filterCharities(province, city, nation, language, has_service) {
+    console.log("filterCharities was called");
     fetch('/filter', {
         method: 'POST',
         headers: {
