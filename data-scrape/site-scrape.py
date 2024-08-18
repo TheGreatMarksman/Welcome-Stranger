@@ -22,18 +22,15 @@ people = getNames(temp)
 temp = pd.read_csv('data-scrape/flags.csv', usecols=[3])["Languages"].to_list()
 language = getNames(temp)
 
-flags = list(set(nation + people + language))
+flags = dict.fromkeys(set(nation + people + language), False)
 
-link = "https://100milebaptist.com/"
+link = "https://willingdon.org/ilm"
 site_content = urllib.request.urlopen(link).read().decode("utf-8")
 
 print(site_content)
 
 for word in flags:
     if word in site_content:
-        print(f"{word} found")
-    else:
-        print(f"{word} not found")
+        flags[word] = True
 
-if "Christ" in site_content:
-    print("Christ found")
+print(flags)
