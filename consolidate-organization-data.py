@@ -1,10 +1,13 @@
 import pandas as pd
 import re
 
+NUM_ORGS = 50 # number of organizations to use
+
 data = pd.DataFrame() # ideal schema: id, name, website, phone, email, description
 
+# GET ID AND NAME
 name_cdlink_description = pd.read_csv("data-scrape/data/test-data-1000.csv") # schema: name, charity data link, description
-name_cdlink_description = name_cdlink_description.head(50)
+name_cdlink_description = name_cdlink_description.head(NUM_ORGS)
 
 length = name_cdlink_description.shape[0]
 
@@ -30,8 +33,9 @@ assert data.shape[0]==length
 id_description = name_cdlink_description[["id", "description"]]
 del name_cdlink_description
 
+# GET WEBSITE
 id_website = pd.read_csv("data-scrape/data/test-results-1000.csv", usecols=[3,4])
-id_website = id_website.head(50)
+id_website = id_website.head(NUM_ORGS)
 id_website.rename(columns={"Business Registration Number:":"id","Website:":"website"}, inplace=True)
 
 data = data.merge(id_website, how="outer", on=["id"])
@@ -39,12 +43,14 @@ assert data.shape[0]==length
 
 del id_website
 
+# GET PHONE AND EMAIL
 # TODO: get phone and email
 data["phone"] = "phone number"
 data["email"] = "email"
 
+# GET DESCRIPTION
 data = data.merge(id_description, how="outer", on=["id"])
 assert data.shape[0]==length
 
-#print(data)
+# save as csv
 data.to_csv("sample-org-data.csv")
