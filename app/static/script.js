@@ -32,8 +32,114 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     
+    filterCharities();
+
+    for (const dropdown of document.getElementsByClassName('dropdown-input')) {
+        menu =  document.getElementById('dropdown-menu');
+        dropdown.addEventListener('focus', function() {
+            menu.style.display = 'block';
+        });
+
+        function filterOptions() {
+            let filter = dropdown.value.toLowerCase();
+            let dropdownMenu = dropdown.parentElement.querySelector('.dropdown-menu');
+            let items = dropdownMenu.getElementsByClassName('dropdown-item');
+        
+            for (let i = 0; i < items.length; i++) {
+                let itemText = items[i].textContent.toLowerCase();
+                if (itemText.indexOf(filter) > -1) {
+                    items[i].style.display = "";
+                } else {
+                    items[i].style.display = "none";
+                }
+            }
+        }
+
+        dropdown.addEventListener('input', () => {
+            filterOptions();
+            menu.style.display = 'block';
+        })
+
+        dropdown.parentElement.querySelector('.clear-button').addEventListener('click', function() {
+            dropdown.value = ''; // Clear the input field
+            document.getElementById('dropdown-menu').style.display = 'none'; // Hide dropdown after clearing input
+            filterOptions();
+        });
+    }
+    
+    document.getElementById('dropdown-menu').addEventListener('click', function(e) {
+        if (e.target.classList.contains('dropdown-item')) {
+            e.target.parentElement.parentElement.querySelector('.dropdown-input').value = e.target.textContent;
+            e.target.parentElement.style.display = 'none';
+        }
+    });
+    
+    document.addEventListener('click', function(e) {
+        for (const dropdownMenu of document.getElementsByClassName('dropdown-menu')) {
+            let dropdown = dropdownMenu.parentElement.querySelector('.dropdown-input');
+            if (!dropdown.contains(e.target)) {
+                if (dropdownMenu.style.display == 'none') {
+                    continue;
+                }
+
+                dropdownMenu.style.display = 'none';
+
+                let value = dropdown.value.toLowerCase();
+
+                if (value.trim() == "") {
+                    dropdown.value = "";
+                    continue;
+                }
+
+                let items = dropdownMenu.getElementsByClassName('dropdown-item');
+            
+                let hasMatch = false;
+                for (let i = 0; i < items.length; i++) {
+                    let itemText = items[i].textContent.toLowerCase();
+                    if (itemText.indexOf(value) > -1) {
+                        hasMatch = true;
+                        dropdown.value = items[i].textContent;
+                        break;
+                    }
+                }
+
+                if (!hasMatch) dropdown.value = "";
+
+                filterFromUI();
+            }
+        }
+    });
+    
+    document.getElementById('provinceList').addEventListener('change', () => {
+        updateCityList(document.getElementById('provinceList').value);
+    });
+
+    document.getElementById('provinceList').addEventListener('change', () => {
+        filterFromUI();
+    });
+    
+    document.getElementById('NationList').addEventListener('change', () => {
+        filterFromUI();
+    });
 });
 
+function updateCityList(province) {
+    console.log(province);
+    for (const city of document.getElementsByClassName("city-option")) {
+        city.classList.remove('hidden');
+        if (province != "" && city.attributes.province.value != province) {
+            city.classList.add('hidden');
+        }
+    }
+}
+
+function filterFromUI() {
+    const province = document.getElementById('provinceList').value;
+    const city = document.getElementById('city').value;
+    const nation = document.getElementById('NationList').value;
+
+    filterCharities(province, city, nation, null, null);
+}
 
 function filterCharities(province, city, nation, language, has_service) {
     fetch('/filter', {
