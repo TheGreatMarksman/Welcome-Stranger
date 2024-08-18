@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchBar = document.getElementById('searchBar');
     let scrollableList = document.getElementById('scrollableList');
     const listSections = scrollableList.getElementsByClassName('listSection');
-    
-    console.log("list sections: " + listSections[0]);
 
     searchBar.addEventListener('input', function(event) {
         event.preventDefault(); // Prevent the form from submitting
@@ -163,7 +161,7 @@ function filterCharities(province, city, nation, language, has_service) {
             listSection.className = 'listSection';
 
             listSection.innerHTML = `
-                <a class="charityName" href="https://${charity.website_name}">${charity.organization_name}</a>
+                <a class="charityName" target="_blank" href="https://${charity.website_name}">${charity.organization_name}</a>
                 <div class="location">
                     ${charity.address}, ${charity.city_name}, ${charity.province_name}
                 </div>
@@ -178,21 +176,19 @@ function filterCharities(province, city, nation, language, has_service) {
                 <br>
                 <div>
                     ${charity.phone || ''} | 
-                    <a href="https://${charity.website_name || ''}">${charity.website_name || ''} </a> | 
+                    <a target="_blank" href="https://${charity.website_name || ''}">${charity.website_name || ''} </a> | 
                     ${charity.email || ''}
                 </div>
-                <button class="mapButton">Show on Map</button>
             `;
             scrollableList.appendChild(listSection);
         });
 
         const mapIframe = document.getElementById('map');
-        let mapButtons = scrollableList.getElementsByClassName('mapButton');
-
+        const listSections = scrollableList.getElementsByClassName('listSection');
+        mapURL = ``;
         // Adds listener for every map button
-        Array.from(mapButtons).forEach(btn => {
-            btn.addEventListener('click', function(){
-                const section = btn.closest('.listSection');
+        Array.from(listSections).forEach(section => {
+            section.addEventListener('mouseover', function(){
                 const location = section.getElementsByClassName('location')[0];
                 const address = location.textContent.split(',')[0];
                 let mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(address)}&z=15&output=embed`;
