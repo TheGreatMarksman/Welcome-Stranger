@@ -136,6 +136,8 @@ function filterFromUI() {
     filterCharities(province, city, nation, null, null);
 }
 
+let timeoutId = null;
+
 function filterCharities(province, city, nation, language, has_service) {
     fetch('/filter', {
         method: 'POST',
@@ -166,34 +168,47 @@ function filterCharities(province, city, nation, language, has_service) {
                     ${charity.address}, ${charity.city_name}, ${charity.province_name}
                 </div>
                 <br>
-                <div>
-                    Has church service: ${charity.has_service ? 'Yes' : 'No'}
+                <div class='descriptions'>${charity.description || ''}</div>
+                <br>
+                <div class='service'>
+                    <strong>Has church service:</strong> ${charity.has_service ? 'Yes' : 'No'}
                 </div>
-                <div>${charity.description || ''}</div>
+                <div class='languages'><strong>Languages:</strong> ${charity.languages || ''}</div>
+                <div class='nations'><strong>Nations:</strong> ${charity.nations || ''}</div>
                 <br>
-                <div>Languages: ${charity.languages || ''}</div>
-                <div>Nations: ${charity.nations || ''}</div>
-                <br>
-                <div>
+                <div class='contact-info'>
+                    <i class="fa-solid fa-phone"></i>
                     ${charity.phone || ''} | 
+                    <i class="fa-solid fa-globe"></i>
                     <a target="_blank" href="https://${charity.website_name || ''}">${charity.website_name || ''} </a> | 
+                    <i class="fa-solid fa-envelope"></i>
                     ${charity.email || ''}
                 </div>
             `;
             scrollableList.appendChild(listSection);
         });
 
+        if (data.length == 0) {
+            scrollableList.innerHTML = "<center><h3>No Results Found</h3></center>"
+        }
+
         const mapIframe = document.getElementById('map');
         const listSections = scrollableList.getElementsByClassName('listSection');
         mapURL = ``;
         // Adds listener for every map button
         Array.from(listSections).forEach(section => {
-            section.addEventListener('mouseover', function(){
-                const location = section.getElementsByClassName('location')[0];
-                const address = location.textContent.split(',')[0];
-                let mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(address)}&z=15&output=embed`;
-                mapIframe.src = mapUrl;
-            });
+            section.addEventListener('mouseover', () => {
+                if (timeoutId != null) clearTimeout(timeoutId);
+                timeoutId = setTimeout(
+                    () => {
+                        const location = section.getElementsByClassName('location')[0];
+                        const address = location.textContent.split(',')[0];
+                        let mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(address)}&z=15&output=embed`;
+                        mapIframe.src = mapUrl;
+                    },
+                    500
+                )
+            } );
         });
     });
 }
