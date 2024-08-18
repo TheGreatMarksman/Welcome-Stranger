@@ -173,6 +173,8 @@ h1 {
   
 .mapSection{
     background-color: rgb(226, 226, 226);
+    position: relative;
+    display: inline-block;
 }
 
 /* Rounded corners for the dropdown list */
@@ -323,4 +325,24 @@ button:hover {
 .text-button:hover {
     color: darkblue;
     background: none;
+}
+
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+}
+
+#fullscreen-btn{
+    position: absolute;
+    top: 3%;
+    left: 80%;
+    z-index: 1000;
+    background-color: #fff;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
 }
