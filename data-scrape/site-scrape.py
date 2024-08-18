@@ -1,10 +1,8 @@
-# filter out names with unwanted words
-# split into two databases -> those with websites and those without
-# search for keywords for those with websites and tag -> if broken link, move to no website
-# somehow deal with those without websites -> google search???
 import pandas as pd
 import urllib.request
 import asyncio, aiohttp, re, gzip
+import re
+import validators
 
 # sitemap page locating adapted (as in directly taken) from https://stackoverflow.com/questions/56663789/how-to-get-all-pages-from-the-whole-website-using-python
 async def processMapsRecursively(queue, session, mainDomain, foundPageAddresses):
@@ -91,12 +89,13 @@ def getNames(list):
     for s in list:
         name = s.split(',')
         for n in name: 
-            val.append(n)
+            val.append(n.casefold()) # for case-insensitive comparisons
     return val
 
 # keywords to filter page links 
 page_filter = ["service", "ministry", "ministries", "welcome", "contact", "about us", "language", 
-               "group", "culture", "home", "our history", "translation", "connect", "ilm"]
+               "group", "culture", "home", "history", "translation", "connect", "giving", "global"
+               "nation"]
 
 # import flags
 temp = pd.read_csv('data-scrape/flags.csv', usecols=[1])["Nation"].to_list()
@@ -109,23 +108,52 @@ language = getNames(temp)
 flags = dict.fromkeys(set(nation + people + language), False)
 
 # find all pages on site
-link = "https://willingdon.org"
+link = "http://WWW.100MILEBAPTIST.COM"
 index_pages = asyncio.run(collectPagesFromMaps(link))
-# TODO: check for sitemap location failure
+print("INDEX PAGES")
+print(index_pages)
 
-# filter out relevant links
-pages = []
-for page in index_pages:
-    if any(ele in page for ele in page_filter):
-        pages.append(page)
+if index_pages != None:
 
-# scan relevant links for information
-print(pages)
-for page in pages: 
-    site_content = urllib.request.urlopen(page).read().decode("utf-8")
+    # filter out relevant links
+    pages = []
+    # link_length = re.compile('(.*://.*/.*)/')
+    for page in index_pages:
+        # validate link
+        if validators.url(page):
+            # format the link - make sure link ends with slash
+            if page[-1] != '/':
+                page += '/'
+            # only keep links of a certain length
+            #if link_length.match(page) is not None:
+            test = page.count('/')
+            if test <=4:
+                pages.append(page)
 
-    for word in flags:
-        if word in site_content:
-            flags[word] = True
+    # extra filtering if too many links
+    if len(pages) > 20:
+        temp = pages
+        pages = []
+        for page in temp:
+            if any(ele in page for ele in page_filter):
+                pages.append(page)
+
+    # quicksolve of incomplete sitemaps
+    if len(pages) == 0:
+        pages.append(link)
+                    
+    print(len(pages))
+    # scan relevant links for information
+    # TODO: make sure scraping is not case sensitive
+    print("PAGES")
+    print(pages)
+    for page in pages: 
+        print(page)
+        site_content = urllib.request.urlopen(page).read().decode("utf-8")
+        for word in flags:
+            if word in site_content.casefold():
+                flags[word] = True
+
+# TODO: deal with sitemap location failure
 
 print(flags)
