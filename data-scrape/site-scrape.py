@@ -118,7 +118,6 @@ with open('data-scrape/data/sample-results.csv', mode='r', newline='', encoding=
         key = row[key_column]
         value = row[value_column]
         links_list[key] = value
-print(links_list.items())
 
 # import flags
 temp = pd.read_csv('data-scrape/flags.csv', usecols=[1])["Nation"].to_list()
@@ -150,8 +149,6 @@ for num, link in links_list.items():
                     index_pages = asyncio.run(collectPagesFromMaps(link))
                 except:
                     pass
-        print("INDEX PAGES")
-        print(index_pages)
 
         if index_pages != None:
 
@@ -182,21 +179,20 @@ for num, link in links_list.items():
             if len(pages) == 0:
                 pages.append(link)
                             
-            print(len(pages))
             # scan relevant links for information
-            print("PAGES")
-            print(pages)
-
             for page in pages: 
                 print(page)
-                site_content = urllib.request.urlopen(page).read().decode("utf-8")
-                for word in myflags:
-                    if word in site_content.casefold():
-                        myflags[word] = True
+                try: 
+                    site_content = urllib.request.urlopen(page).read().decode("utf-8")
+                    for word in myflags:
+                        if word in site_content.casefold():
+                            myflags[word] = True
+                except:
+                    continue
 
         # TODO: deal with sitemap location failure
 
         Data[num] = myflags
 
-with open('language-data.json', 'w') as fp:
+with open('language-data-sample.json', 'w') as fp:
     json.dump(Data, fp)
