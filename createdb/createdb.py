@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 import json
 
-db = sqlite3.connect('../organizations.sql')
+db = sqlite3.connect('../organizations.db')
 
 language_text = """
 Unkown
