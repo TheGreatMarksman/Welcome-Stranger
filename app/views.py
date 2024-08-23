@@ -7,7 +7,8 @@ blueprint = Blueprint("views", __name__)
 def home():
     provinces = db.get_provinces()
     cities = db.get_cities()
-    return render_template("index.html", provinces=provinces, cities=cities)
+    nations = db.get_nations()
+    return render_template("index.html", provinces=provinces, cities=cities, nations=nations)
 
 @blueprint.route('/filter', methods=['POST'])
 def filter():

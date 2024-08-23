@@ -35,9 +35,9 @@ def filter(province=None, cities=None, languages=None, nations=None, has_church_
     FROM locations l
     JOIN organizations o ON l.organization_id = o.id
     JOIN cities c ON l.city_id = c.id
-    JOIN location_languages ll ON l.id = ll.location_id
-    JOIN languages lang ON ll.language_id = lang.id
-    JOIN nations n ON ll.nation_id = n.id
+    LEFT JOIN location_languages ll ON l.id = ll.location_id
+    LEFT JOIN languages lang ON ll.language_id = lang.id
+    LEFT JOIN nations n ON ll.nation_id = n.id
     WHERE 1=1
     """
     
@@ -129,6 +129,13 @@ def get_cities():
         FROM cities
         JOIN locations ON cities.id = locations.city_id;
     """)
+    
+def get_nations():
+    return [n[0] for n in query_db("""
+        SELECT DISTINCT nations.name
+        FROM nations
+        JOIN location_languages ON nations.id = location_languages.nation_id;
+    """)]
 
 def close_db(exception):
     db = getattr(g, '_database', None)
