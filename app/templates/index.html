@@ -66,10 +66,9 @@
                 <label for="NationList">Nation</label>
                 <select id="NationList">
                     <option value="">Any</option>
-                    <option value="Indian">Indian</option>
-                    <option value="Turkish">Turkish</option>
-                    <option value="Iranian">Iranian</option>
-                    <option value="Afghan">Afghan</option>
+                    {% for nation in nations %}
+                        <option value="{{ nation }}">{{ nation }}</option>
+                    {% endfor %}
                 </select>
             </div>
 

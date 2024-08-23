@@ -129,6 +129,13 @@ def get_cities():
         FROM cities
         JOIN locations ON cities.id = locations.city_id;
     """)
+    
+def get_nations():
+    return [n[0] for n in query_db("""
+        SELECT DISTINCT nations.name
+        FROM nations
+        JOIN location_languages ON nations.id = location_languages.nation_id;
+    """)]
 
 def close_db(exception):
     db = getattr(g, '_database', None)

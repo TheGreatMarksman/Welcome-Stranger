@@ -33,43 +33,17 @@ Nihongo
 Chinese, Cantonese
 """
 
-nation_text = """
-Unkown
-Iranian
-Afghan
-Somali
-Syrian
-Turk, Turkish
-Punjabi, Panjabi
-Bangaldeshi
-Bosnian, Bosniaks
-Uyghur
-Tibetan
-Sri Lankan
-Palestinian
-Pakistani
-Moroccan
-Lebanese
-Jewish
-Indian Hindhu
-Gujarati
-Egyptian
-Cambodian
-Algerian
-Tunisian
-Korean
-Japanese
-Chinese
-hebrew
-"""
-
 ORGANIZATION_DATA_FILE = "../data-scrape/sample-org-data.csv"
 START_FILE = "../data-scrape/data/raw-data/canadian-registered-charities.csv"
 CONTACT_FILE = "../data-scrape/data/contact-info-results-1000.csv"
 NATION_FILE = "../nations.json"
 
 languages = [l for l in ', '.join(language_text.splitlines()).split(', ') if l]
-nations = [l for l in ', '.join(nation_text.splitlines()).split(', ') if l]
+
+with open(NATION_FILE) as f:
+    nationList = json.load(f)
+    
+nations = ['unkown'] + list(set(nation for org in nationList for nation in nationList[org]))
 
 def load_csv_to_memory(file_path):
     """
@@ -101,9 +75,6 @@ cursor = db.cursor()
 
 cities = set()
 
-with open(NATION_FILE) as f:
-    nationList = json.load(f)
-
 for _, row in base_data.iterrows():
     city = row['City']
     province = row["Province, territory, outside of Canada"]
@@ -118,14 +89,24 @@ for city, province in cities:
     """, [city, province])
     city_map[f'{city}/{province}'] = cursor.lastrowid
 
+addedCount = 0
 for _, org_row in org_data.iterrows():
     id = org_row['id']
     
     base_row = find_row_in_data(base_data, 'BN/Registration Number', id)
     contact_row = find_row_in_data(contact_data, 'Business Registration Number:', id)
     
-    if base_row is None: continue
-    if contact_row is None: continue
+    if base_row is None: 
+        print(f'No match in base data. Skipping {id}.')
+        continue
+    if contact_row is None: 
+        print(f'No match in contact data. Skipping {id}.')
+        continue
+    
+    if id not in nationList: 
+        supportedNations = []
+    else: 
+        supportedNations = nationList[id]
 
     name = org_row['name']
     address = base_row['Address']
@@ -133,9 +114,6 @@ for _, org_row in org_data.iterrows():
     phone = contact_row['phone'] if contact_row is not None else "N/A"
     description = org_row['description']
     website = org_row['website']
-    
-    if id not in nationList: continue
-    supportedNations = nationList[id]
 
     city = base_row['City']
     province = base_row["Province, territory, outside of Canada"]
@@ -155,12 +133,17 @@ for _, org_row in org_data.iterrows():
     VALUES (?, ?, ?, ?)
     """, [org_id, cityid, address, 0])
     
+    location_id = cursor.lastrowid
+    
     for nation in supportedNations:
         nationId = nations.index(nation) + 1
         cursor.execute("""
         INSERT INTO location_languages (location_id, language_id, nation_id)
         VALUES (?, ?, ?)
-        """, [cityid, 1, nationId])
+        """, [location_id, 1, nationId])
+    addedCount += 1
+    
+print(f"Added {addedCount} organizations")
 
 # Commit the transaction and close the database
 db.commit()
